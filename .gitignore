@@ -1,2 +1,7 @@
 storage/
 config/
+src/staticfiles/
+src/static/
+src/media/
+src/back_static/
+.env
