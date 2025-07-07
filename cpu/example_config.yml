@@ -1,0 +1,78 @@
+mqtt:
+  enabled: true
+  host: 10.118.210.104
+  port: 1883
+  user: camera_client
+  password: S347367j
+
+tls:
+  enabled: false
+
+
+
+detectors:
+  cpu1:
+    type: cpu
+  cpu2:
+    type: cpu
+  cpu3:
+    type: cpu
+  cpu4:
+    type: cpu
+  cpu5:
+    type: cpu
+  cpu6:
+    type: cpu
+cameras:
+  # Exit:
+  #   enabled: true
+  #   ffmpeg:
+  #     inputs:
+  #       - path: rtsp://user1:Asdfqazx321@10.118.210.113:554/
+  #         roles:
+  #           - detect
+  #   detect:
+  #     enabled: true
+  #     fps: 10
+
+  #   objects:
+  #     track:
+  #       - person
+
+  #   motion:
+  #     contour_area: 14
+  #     threshold: 15
+  #     mask:
+  #       - 0.777,0.013,0.943,0.387,1,0.366,0.998,0.088,0.959,0.004
+  #       - 0.011,0.012,0.179,0.017,0.188,0.379,0.007,0.41
+  #     improve_contrast: 'true'
+  Login:
+    enabled: true
+    ffmpeg:
+      inputs:
+        # - path: rtsp://admin:S347367j@10.118.210.115/cam/realmonitor?channel=1&subtype=0
+        #   roles:
+        #     - detect
+        - path: rtsp://admin:S347367j@10.118.210.115/cam/realmonitor?channel=1&subtype=1
+          roles:
+            - detect
+
+    detect:
+      enabled: true
+      fps: 10
+
+    objects:
+      track:
+        - person
+      filters:
+        person:
+          threshold: 0.5
+
+    motion:
+      contour_area: 14
+      threshold: 27
+      mask:
+        - 0.777,0.013,0.943,0.387,1,0.366,0.998,0.088,0.959,0.004
+        - 0.011,0.012,0.179,0.017,0.188,0.379,0.007,0.41
+        - 0.338,0.462,0.309,0.787,0.606,0.803,0.655,0.558,0.43,0.481
+version: 0.14

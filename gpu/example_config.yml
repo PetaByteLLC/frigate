@@ -1,0 +1,264 @@
+mqtt:
+  enabled: true
+  host: 192.168.80.112
+  port: 1883
+  user: frigate
+  password: S347367j
+
+go2rtc:
+  streams:
+    login:
+      - rtsp://admin:user12345@192.168.80.171:554/Streaming/Channels/102
+      # - "ffmpeg:login#video=h264#hardware"
+    login2:
+      - rtsp://admin:user12345@192.168.80.172:554/Streaming/Channels/102
+      # - ffmpeg:login2#video=h264#hardware
+    exit:
+      - rtsp://admin:user12345@192.168.80.173:554/Streaming/Channels/101
+      # - ffmpeg:exit#video=h264#hardware
+  webrtc:
+    candidates:
+      - 10.30.5.18:8555
+      - stun:8555
+    listen: :8555
+
+live:
+  height: 640
+  quality: 6
+detectors:
+  tensorrt:
+    type: tensorrt
+  tensorrt2:
+    type: tensorrt
+  tensorrt3:
+    type: tensorrt
+  tensorrt4:
+    type: tensorrt
+  tensorrt5:
+    type: tensorrt
+
+model:
+  path: /config/model_cache/tensorrt/yolov7-320.trt
+  input_tensor: nchw
+  input_pixel_format: rgb
+  width: 320
+  height: 320
+
+cameras:
+
+  cam1:
+    review:
+      alerts:
+        required_zones: zone1
+    enabled: false
+    ffmpeg:
+      inputs:
+        - path: rtsp://admin:qwerty12345@192.168.80.170:554/Streaming/Channels/102
+          input_args: preset-rtsp-restream
+          roles:
+            - detect
+    detect:
+      # width: 640
+      # height: 480
+      fps: 5
+
+    objects:
+      track:
+        - car
+        - truck
+        - bus
+      filters:
+        car:
+          threshold: 0.7
+      mask: 0,1,0,0,1,0,1,0.706,0.379,0.548,0.414,0.299,0.227,0.225,0.075,0.476,1,0.7,1,1
+    zones:
+      zone1:
+        coordinates: 0.16,0.483,0.316,0.508,0.323,0.459,0.19,0.426
+        loitering_time: 0
+        inertia: 1
+    motion:
+      mask: 
+        0,1,0.002,0,0.999,0,1,0.704,0.38,0.552,0.419,0.3,0.22,0.214,0.069,0.475,1,0.704,1,1
+      threshold: 49
+      contour_area: 10
+      improve_contrast: true
+
+  Entry:
+    review:
+      alerts:
+        required_zones:
+          - zone1
+          - zone2
+    enabled: false
+    ffmpeg:
+      inputs:
+        - path: rtsp://admin:user12345@192.168.80.171:554/Streaming/Channels/102
+          input_args: preset-rtsp-restream
+          roles:
+            - detect
+    detect:
+      # width: 640
+      # height: 480
+      fps: 20
+
+    objects:
+      track:
+        - car
+        - truck
+        - bus
+      filters:
+        car:
+          threshold: 0.7
+      mask: 0,1,0,0,1,0,1,0.359,0.227,0.225,0.075,0.476,1,0.7,1,1
+    zones:
+      zone1:
+        coordinates: 0.206,0.31,1,0.429,1,0.366,0.237,0.23
+        loitering_time: 0
+        inertia: 1
+      zone2:
+        coordinates: 0.207,0.311,1,0.429,1,0.369,0.233,0.239
+        loitering_time: 0
+        inertia: 1
+
+      zone3:
+        coordinates: 0.198,0.379,0.995,0.514,0.982,0.639,0.154,0.447
+        loitering_time: 0
+      zone4:
+        coordinates: 0.2,0.383,0.155,0.45,0.98,0.637,0.996,0.513
+        loitering_time: 0
+    motion:
+      mask: 0,1,0.002,0,0.999,0,1,0.333,0.22,0.214,0.069,0.475,1,0.704,1,1
+      threshold: 49
+      contour_area: 10
+      improve_contrast: true
+
+  Entry2:
+    review:
+      alerts:
+        required_zones:
+          - zone1
+          - zone2
+    enabled: false
+    ffmpeg:
+      inputs:
+        - path: rtsp://admin:user12345@192.168.80.172:554/Streaming/Channels/102
+          input_args: preset-rtsp-restream
+          roles:
+            - detect
+    detect:
+      # width: 640
+      # height: 480
+      fps: 20
+
+    objects:
+      track:
+        - car
+        - truck
+        - bus
+      filters:
+        car:
+          threshold: 0.7
+      mask: 
+        0,0.367,0,0,1,0,1,1,0.613,0.478,0.58,0.323,0.717,0.25,0.977,0,0.607,0.174,0.38,0.19
+    zones:
+      zone1:
+        coordinates: 0,0.529,0,0.593,0.7,0.25,0.833,0.131,0.391,0.297
+        loitering_time: 0
+        inertia: 1
+      zone2:
+        coordinates: 0,0.517,0,0.6,0.701,0.25,0.824,0.135,0.358,0.319
+        loitering_time: 0
+        inertia: 1
+
+      zone3:
+        coordinates: 0,0.664,0.074,0.738,0.581,0.484,0.5,0.385
+        loitering_time: 0
+        inertia: 3
+      zone4:
+        coordinates: 0.002,0.659,0.074,0.736,0.581,0.486,0.497,0.38
+        loitering_time: 0
+        inertia: 3
+    motion:
+      mask: 
+        0,0.371,0.002,0,0.999,0,1,0.989,0.611,0.486,0.581,0.323,0.718,0.244,0.969,0.008,0.609,0.175,0.396,0.186
+      threshold: 51
+      contour_area: 10
+      improve_contrast: true
+
+  Exit:
+    review: {}
+    enabled: true
+    ffmpeg:
+      inputs:
+        - path: rtsp://admin:user12345@192.168.80.173:554/Streaming/Channels/102
+          input_args: preset-rtsp-restream
+          roles:
+            - detect
+    detect:
+      # width: 640
+      # height: 480
+      fps: 10
+
+    objects:
+      track:
+        - car
+        - truck
+        - bus
+      filters:
+        car:
+          threshold: 0.7
+      mask: 0,0,1,0,1,1,0.907,0.328,0.743,0.156,0.698,0,0.546,0,0.085,0.338,0,0.261
+    zones:
+      zone3:
+        coordinates: 0.085,0.418,0.147,0.835,0.891,0.473,0.696,0.185
+        loitering_time: 0
+        inertia: 3
+      zone4:
+        coordinates: 0.085,0.42,0.151,0.826,0.891,0.471,0.701,0.191
+        loitering_time: 0
+        inertia: 3
+    motion:
+      mask: 
+        0.002,0,1,0,1,0.187,1,1,0.91,0.327,0.745,0.159,0.704,0,0.548,0,0.09,0.342,0,0.257
+      threshold: 51
+      contour_area: 10
+      improve_contrast: true
+
+  Exit2:
+    review: {}
+    enabled: true
+    ffmpeg:
+      inputs:
+        - path: rtsp://admin:qwerty12345@192.168.80.35/cam/realmonitor?channel=1&subtype=1
+          input_args: preset-rtsp-restream
+          roles:
+            - detect
+    detect:
+      width: 640
+      height: 480
+      fps: 10
+
+    objects:
+      track:
+        - car
+        - truck
+        - bus
+      filters:
+        car:
+          threshold: 0.7
+
+      mask: 
+        0,0,0,0.431,0.268,0.393,0.313,0.335,0.431,0.313,0.721,0.42,0.835,0.547,0.756,1,1,1,1,0.384,1,0
+    zones:
+      zone1:
+        coordinates: 0.209,0.466,0.354,0.369,0.833,0.602,0.576,0.986
+        loitering_time: 0
+        inertia: 3
+      zone2:
+        coordinates: 0.209,0.47,0.577,0.99,0.835,0.601,0.356,0.368
+        loitering_time: 0
+    motion:
+      mask: 
+        0,0,0,0.427,0.269,0.393,0.309,0.331,0.432,0.313,0.728,0.426,0.836,0.547,0.758,1,1,1,1,0.378,1,0
+version: 0.15-1
+

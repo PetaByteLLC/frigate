@@ -1,0 +1,23 @@
+services:
+  frigate:
+    container_name: frigate
+    privileged: true 
+    restart: unless-stopped
+    image: ghcr.io/blakeblackshear/frigate:stable
+    shm_size: "1gb" 
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./config:/config
+      - ./storage:/media/frigate
+      - type: tmpfs  
+        target: /tmp/cache
+        tmpfs:
+          size: 1000000000
+    ports:
+      - "8971:8971"
+      - "5000:5000"  
+      - "8554:8554" 
+      - "8555:8555/tcp"  
+      - "8555:8555/udp"
+    environment:
+      FRIGATE_RTSP_PASSWORD: "S347367j"
